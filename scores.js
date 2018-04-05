@@ -1,8 +1,9 @@
-const jsonBody = require("body/json");
+const bodyParser = require("body-parser");
 const express = require("express");
 var scores = [{name: "Edwin", score: 50}, {name: "David", score: 39}];
 const port = 3000;
 const server = express();
+server.use(bodyParser.json());
 var body;
 
 function compareScores(a, b) {
@@ -20,13 +21,11 @@ server.get("/scores", (req, res) => {
 
 server.post("/scores", (req, res) => {
   res.status(201);
-  jsonBody(req, res, (err, body) => {
-    scores.push(body);
-    var byScore = scores.slice(0)
-    byScore.sort(compareScores);
-    scores = byScore.slice(0, 3);
-    res.end();
-  })
-}),
+  scores.push(req.body);
+  var byScore = scores.slice(0)
+  byScore.sort(compareScores);
+  scores = byScore.slice(0, 3);
+  res.end();
+});
 
 server.listen(port, () => console.log(`Server running at http://:${port}/`));
