@@ -12,16 +12,16 @@ function compareScores(a, b) {
 };
 
 server.get(!"/scores", (req, res) => {
-  res.statusCode = 404;
+  res.status(404).end();
 }),
 server.get("/scores", (req, res) => {
-  res.statusCode = 200;
+  res.status(200);
   res.setHeader('Content-Type', 'application/javascript');
   body = scores;
   res.end(JSON.stringify(scores));
 }),
 server.post("/scores", (req, res) => {
-  res.statusCode = 201;
+  res.status(201);
   jsonBody(req, res, (err, body) => {
     scores.push(body);
     var byScore = scores.slice(0)
@@ -30,9 +30,6 @@ server.post("/scores", (req, res) => {
     res.end();
   })
 }),
-
-// });
-// });
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
